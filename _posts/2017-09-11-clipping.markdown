@@ -1,0 +1,144 @@
+---
+title:  "Developing a Geometry Clipping Algorithm in Java"
+date:   2017-09-11 17:30:00
+categories: GIS
+tags: GIS, Java, Web Application
+---
+
+Suppose we have a polygon and we'd like to clip a section of its boundary a pair of starting and ending coordinates that are very close to the boundary. How are we going to handle that? First, we probably need some function to "snap" the starting and ending points to the polygon boundary. Then we do the clipping with two points that actually lie on the polygon boundary.
+
+I created this `findBestPoint` function to return the intersection point of a straight line and a perpendicular
+line to a known point on this straight line, which basically does the "snapping" work.    
+
+Here is a simple example.
+Point 1 and 2 are two given points that lies on a straight line The coordinates of point 1 and point 2 are as follows:
+
+x1 = 24965.715799805574, y1 = -397295.5640998855;
+x2 = 23701.147599808868, y2 = -397373.1828998886;
+
+Then we can get the slope of the straight line (a).
+a = (y1 - y2)/(x1 - x2);
+
+
+We can also get the intercept (b) the line segment between point 1 and 2.
+b =  (x1 * y2 - x2 * y1) / (x1 - x2);
+
+Point 3 is another given point that stands outside of the given straight line with known coordinates:
+x3 = 24572.124511823895, y3 = -397345.93904533144;
+
+If we draw a perpendicular line from point 3 to the given straight line, we can get the slope (k) of this perpendicular line and corresponding intercept(m).
+k = -1/a;
+m = y3 - x3*k;
+
+Then we can calculate the coordinates of the intersection point of the given straight line and the drawn perpendicular line:
+x = (m - b)/(a - k);  
+y = a*x + b;
+
+```ruby
+public final static Coordinate findBestPoint(Coordinate myCoord, Coordinate coord1, Coordinate coord2){
+  Coordinate result = null;
+  try {
+    Double a = (coord1.y - coord2.y) / (coord1.x - coord2.x);
+    Double b = (coord1.x * coord2.y - coord2.x * coord1.y) / (coord1.x - coord2.x);
+    Double k = -1/a;
+    Double m = myCoord.y - myCoord.x * k;
+    Double x = (m - b) / (a - k);
+    Double y = a*x + b;
+    result = new Coordinate(x, y);
+  } catch (Exception e) {
+    ExceptionUtil.throwIllegalStateException(e);
+  }
+  return result;
+}
+```
+
+A polygon, in general, is represented by a finite set of points that construct the path or the ring of its shape. I built the second function called `findNearestCoordinate` to get the point that is the closest to my point (this can be any random point that lies either on or outside or inside of the polygon) from this finite point set.
+```ruby
+public final static Coordinate findNearestCoordinate(Coordinate myCoord, GeometryCollection geometries) {
+  Coordinate result = null;
+  try {
+    Double currentMinDistance = null;
+    Double distance = null;
+    Geometry geom = null;
+    Coordinate coord = null;
+    for (int i = 0; i < geometries.getNumGeometries(); ++i) {
+      geom = geometries.getGeometryN(i);
+      coord = CoordUtil.findNearestPoint(myCoord, geom);
+      distance = myCoord.distance(coord);
+      if ((currentMinDistance == null) || (distance < currentMinDistance)) {
+        currentMinDistance = distance;
+        result = coord;
+      }
+    }
+  }
+  catch (Exception ex) {
+    ExceptionUtil.throwIllegalStateException(ex);
+  }
+  return result;
+}
+```
+
+With the two functions above, I'm ready to clip my polygon.
+```ruby
+public final static Geometry clip(Geometry geom, final Coordinate startCoord, final Coordinate endCoord) {
+  Geometry result = null;
+
+  try {
+    if ((geom == null) || (startCoord == null) || (endCoord == null)) {
+      throw new NullPointerException("The 3 arguments: geometry, start coordinate, end coordinate cannot be unassigned!");
+    }
+
+    Geometry boundary = geom.getBoundary();
+    Coordinate[] coords = null;
+    if ((coords = boundary.getCoordinates()) == null || coords.length == 0) {
+      throw new Exception("The geometry does not have a boundary!");
+    }
+
+    Coordinate nearestStart = CoordUtil.findNearestPoint(startCoord, geom);
+    Coordinate nearestEnd = CoordUtil.findNearestPoint(endCoord, geom);
+    List<Coordinate> coordList = Arrays.asList(coords);
+
+    Integer startIdx = coordList.indexOf(nearestStart);
+    Integer endIdx = coordList.indexOf(nearestEnd);
+    if (startIdx == -1) {
+      throw new Exception("The start coordinate is not in the boundary!");
+    }
+    if (endIdx == -1) {
+      throw new Exception("The end coordinate is not in the boundary!");
+    }
+    if (Objects.equals(startIdx,endIdx)) {
+      endIdx += 2;// temporary
+    }
+    List<Coordinate> clipPath = new ArrayList<Coordinate>();
+    Coordinate bestStart = CoordUtil.findBestPoint(startCoord, geom);
+    Coordinate bestEnd = CoordUtil.findBestPoint(endCoord, geom);
+
+    if(startIdx < endIdx){
+      clipPath = coordList.subList(startIdx, endIdx);
+    }
+    else{
+      clipPath.add(bestStart);
+      List<Coordinate> clipPath1 = coordList.subList(startIdx, coordList.size()-1);
+      List<Coordinate> clipPath2 = coordList.subList(0, endIdx+1);
+      clipPath.addAll(clipPath1);
+      clipPath.addAll(clipPath2);
+      clipPath.add(bestEnd);
+    }
+    if (clipPath != null && !clipPath.isEmpty()) {
+      //Create a new line feature using newCoords
+      GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+      if (clipPath.size() > 1) {
+        result = geometryFactory.createLineString(clipPath.toArray(new Coordinate[0]));
+      }
+      else {
+        result = geometryFactory.createPoint(clipPath.get(0));
+      }
+    }
+  }
+  catch(Exception ex) {
+//      ExceptionUtil.throwIllegalStateException(ex);
+  }
+
+  return result;
+}
+```
