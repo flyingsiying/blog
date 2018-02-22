@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Handling KMLs for Web GIS</title>
+  <meta name="description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
+me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
+must take a KML url. So if a user wants to use a KML file to show their spatial
+objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+
+">
+  <meta name="author" content="Siying Chen">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Handling KMLs for Web GIS">
+  <meta name="twitter:description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
+me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
+must take a KML url. So if a user wants to use a KML file to show their spatial
+objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+
+">
+  
+  <meta name="twitter:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Handling KMLs for Web GIS">
+  <meta property="og:description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
+me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
+must take a KML url. So if a user wants to use a KML file to show their spatial
+objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+
+">
+  <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/blog/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/blog/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="/blog/css/main.css?1519280304428817000">
+  <link rel="canonical" href="http://localhost:4000/blog/2017/webgis-kml/">
+  <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/blog/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/blog/" title="link to home of Siying Chen">
+          <img src="/blog/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Siying Chen</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">GIS, sustainable transportation, and more livable cities please.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/blog/#blog" title="link to Siying Chen blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="/blog/#about" title="link to Siying Chen about" class="blog-button">About</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+
+            
+
+            
+
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/flyingsiying" title="flyingsiying on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:flyingsiying@gmail.com" title="Email flyingsiying@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <li class="navigation__item">
+              <a href="/blog/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="7 Oct 2017" class="post-meta__date date">7 Oct 2017</time>
+      
+      &#8226; <span class="post-meta__tags">on <a href="/blog/tags/#GIS,">GIS,</a> <a href="/blog/tags/#JavaScript,">JavaScript,</a> <a href="/blog/tags/#Web">Web</a> <a href="/blog/tags/#Application">Application</a> </span>
+      
+    </div>
+    <h1 class="post-title">Handling KMLs for Web GIS</h1>
+  </header>
+
+  <section class="post">
+    <p>When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
+me explain. ArcGIS API has this <code class="highlighter-rouge">KMLLayer</code> thing which is so simple to use but it
+must take a KML url. So if a user wants to use a KML file to show their spatial
+objects, he needs to upload his KML somewhere before adding a <code class="highlighter-rouge">KMLLayer</code> layer.</p>
+
+<p>So, is there an option to show KMLs on a web app as easy as it is when someone
+drags a KML to Google Earth and let the feature show. A do-able but time-consuming
+way to achieve this is to create our own KML parser. After parsing the KML, we can
+even have more flexibility to handle those KML-formatted spatial objects.
+We can add them as whatever layers we want, depending on data type.</p>
+
+<p>Here is some practice I made. In my case, I compared two ways of handling a KML
+file that contains an <code class="highlighter-rouge">overlay</code> tag.</p>
+
+<p>Demo 1 - Using <a href="https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html"><code class="highlighter-rouge">KMLLayer</code></a>
+<img src="/blog/images/demo/kml-by-url.gif" alt="" /></p>
+
+<p>Demo 2 - Using my own KML parser
+<img src="/blog/images/demo/kml-google.gif" alt="" /></p>
+
+  </section>
+  
+</article>
+
+
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Siying Chen. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519280304428817000"></script>
+
+
+    </div>
+  </body>
+</html>

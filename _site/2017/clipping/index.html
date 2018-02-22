@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Developing a Geometry Clipping Algorithm in Java</title>
+  <meta name="description" content="Suppose we have a polygon and we’d like to clip a section of its boundary a pair of starting and ending coordinates that are very close to the boundary. How are we going to handle that? First, we probably need some function to “snap” the starting and ending points to the polygon boundary. Then we do the clipping with two points that actually lie on the polygon boundary.
+
+">
+  <meta name="author" content="Siying Chen">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Developing a Geometry Clipping Algorithm in Java">
+  <meta name="twitter:description" content="Suppose we have a polygon and we’d like to clip a section of its boundary a pair of starting and ending coordinates that are very close to the boundary. How are we going to handle that? First, we probably need some function to “snap” the starting and ending points to the polygon boundary. Then we do the clipping with two points that actually lie on the polygon boundary.
+
+">
+  
+  <meta name="twitter:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Developing a Geometry Clipping Algorithm in Java">
+  <meta property="og:description" content="Suppose we have a polygon and we’d like to clip a section of its boundary a pair of starting and ending coordinates that are very close to the boundary. How are we going to handle that? First, we probably need some function to “snap” the starting and ending points to the polygon boundary. Then we do the clipping with two points that actually lie on the polygon boundary.
+
+">
+  <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/blog/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/blog/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="/blog/css/main.css?1519280304428817000">
+  <link rel="canonical" href="http://localhost:4000/blog/2017/clipping/">
+  <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/blog/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/blog/" title="link to home of Siying Chen">
+          <img src="/blog/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Siying Chen</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">GIS, sustainable transportation, and more livable cities please.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/blog/#blog" title="link to Siying Chen blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="/blog/#about" title="link to Siying Chen about" class="blog-button">About</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+
+            
+
+            
+
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/flyingsiying" title="flyingsiying on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:flyingsiying@gmail.com" title="Email flyingsiying@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <li class="navigation__item">
+              <a href="/blog/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="11 Sep 2017" class="post-meta__date date">11 Sep 2017</time>
+      
+      &#8226; <span class="post-meta__tags">on <a href="/blog/tags/#GIS,">GIS,</a> <a href="/blog/tags/#Java,">Java,</a> <a href="/blog/tags/#Web">Web</a> <a href="/blog/tags/#Application">Application</a> </span>
+      
+    </div>
+    <h1 class="post-title">Developing a Geometry Clipping Algorithm in Java</h1>
+  </header>
+
+  <section class="post">
+    <p>Suppose we have a polygon and we’d like to clip a section of its boundary a pair of starting and ending coordinates that are very close to the boundary. How are we going to handle that? First, we probably need some function to “snap” the starting and ending points to the polygon boundary. Then we do the clipping with two points that actually lie on the polygon boundary.</p>
+
+<p>I created this <code class="highlighter-rouge">findBestPoint</code> function to return the intersection point of a straight line and a perpendicular
+line to a known point on this straight line, which basically does the “snapping” work.</p>
+
+<p>Here is a simple example.
+Point 1 and 2 are two given points that lies on a straight line The coordinates of point 1 and point 2 are as follows:</p>
+
+<p>x1 = 24965.715799805574, y1 = -397295.5640998855;
+x2 = 23701.147599808868, y2 = -397373.1828998886;</p>
+
+<p>Then we can get the slope of the straight line (a).
+a = (y1 - y2)/(x1 - x2);</p>
+
+<p>We can also get the intercept (b) the line segment between point 1 and 2.
+b =  (x1 * y2 - x2 * y1) / (x1 - x2);</p>
+
+<p>Point 3 is another given point that stands outside of the given straight line with known coordinates:
+x3 = 24572.124511823895, y3 = -397345.93904533144;</p>
+
+<p>If we draw a perpendicular line from point 3 to the given straight line, we can get the slope (k) of this perpendicular line and corresponding intercept(m).
+k = -1/a;
+m = y3 - x3*k;</p>
+
+<p>Then we can calculate the coordinates of the intersection point of the given straight line and the drawn perpendicular line:
+x = (m - b)/(a - k);<br />
+y = a*x + b;</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="kp">public</span> <span class="n">final</span> <span class="n">static</span> <span class="no">Coordinate</span> <span class="n">findBestPoint</span><span class="p">(</span><span class="no">Coordinate</span> <span class="n">myCoord</span><span class="p">,</span> <span class="no">Coordinate</span> <span class="n">coord1</span><span class="p">,</span> <span class="no">Coordinate</span> <span class="n">coord2</span><span class="p">){</span>
+  <span class="no">Coordinate</span> <span class="n">result</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+  <span class="n">try</span> <span class="p">{</span>
+    <span class="no">Double</span> <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">coord1</span><span class="p">.</span><span class="nf">y</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">.</span><span class="nf">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">coord1</span><span class="p">.</span><span class="nf">x</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">.</span><span class="nf">x</span><span class="p">);</span>
+    <span class="no">Double</span> <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">coord1</span><span class="p">.</span><span class="nf">x</span> <span class="o">*</span> <span class="n">coord2</span><span class="p">.</span><span class="nf">y</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">.</span><span class="nf">x</span> <span class="o">*</span> <span class="n">coord1</span><span class="p">.</span><span class="nf">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">coord1</span><span class="p">.</span><span class="nf">x</span> <span class="o">-</span> <span class="n">coord2</span><span class="p">.</span><span class="nf">x</span><span class="p">);</span>
+    <span class="no">Double</span> <span class="n">k</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">a</span><span class="p">;</span>
+    <span class="no">Double</span> <span class="n">m</span> <span class="o">=</span> <span class="n">myCoord</span><span class="p">.</span><span class="nf">y</span> <span class="o">-</span> <span class="n">myCoord</span><span class="p">.</span><span class="nf">x</span> <span class="o">*</span> <span class="n">k</span><span class="p">;</span>
+    <span class="no">Double</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">k</span><span class="p">);</span>
+    <span class="no">Double</span> <span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">Coordinate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+  <span class="p">}</span> <span class="kp">catch</span> <span class="p">(</span><span class="no">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="no">ExceptionUtil</span><span class="p">.</span><span class="nf">throwIllegalStateException</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>A polygon, in general, is represented by a finite set of points that construct the path or the ring of its shape. I built the second function called <code class="highlighter-rouge">findNearestCoordinate</code> to get the point that is the closest to my point (this can be any random point that lies either on or outside or inside of the polygon) from this finite point set.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="kp">public</span> <span class="n">final</span> <span class="n">static</span> <span class="no">Coordinate</span> <span class="n">findNearestCoordinate</span><span class="p">(</span><span class="no">Coordinate</span> <span class="n">myCoord</span><span class="p">,</span> <span class="no">GeometryCollection</span> <span class="n">geometries</span><span class="p">)</span> <span class="p">{</span>
+  <span class="no">Coordinate</span> <span class="n">result</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+  <span class="n">try</span> <span class="p">{</span>
+    <span class="no">Double</span> <span class="n">currentMinDistance</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+    <span class="no">Double</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+    <span class="no">Geometry</span> <span class="n">geom</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+    <span class="no">Coordinate</span> <span class="n">coord</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">geometries</span><span class="p">.</span><span class="nf">getNumGeometries</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">geom</span> <span class="o">=</span> <span class="n">geometries</span><span class="p">.</span><span class="nf">getGeometryN</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+      <span class="n">coord</span> <span class="o">=</span> <span class="no">CoordUtil</span><span class="p">.</span><span class="nf">findNearestPoint</span><span class="p">(</span><span class="n">myCoord</span><span class="p">,</span> <span class="n">geom</span><span class="p">);</span>
+      <span class="n">distance</span> <span class="o">=</span> <span class="n">myCoord</span><span class="p">.</span><span class="nf">distance</span><span class="p">(</span><span class="n">coord</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">((</span><span class="n">currentMinDistance</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&lt;</span> <span class="n">currentMinDistance</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">currentMinDistance</span> <span class="o">=</span> <span class="n">distance</span><span class="p">;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">coord</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="kp">catch</span> <span class="p">(</span><span class="no">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+    <span class="no">ExceptionUtil</span><span class="p">.</span><span class="nf">throwIllegalStateException</span><span class="p">(</span><span class="n">ex</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>With the two functions above, I’m ready to clip my polygon.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="kp">public</span> <span class="n">final</span> <span class="n">static</span> <span class="no">Geometry</span> <span class="n">clip</span><span class="p">(</span><span class="no">Geometry</span> <span class="n">geom</span><span class="p">,</span> <span class="n">final</span> <span class="no">Coordinate</span> <span class="n">startCoord</span><span class="p">,</span> <span class="n">final</span> <span class="no">Coordinate</span> <span class="n">endCoord</span><span class="p">)</span> <span class="p">{</span>
+  <span class="no">Geometry</span> <span class="n">result</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+
+  <span class="n">try</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">geom</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">startCoord</span> <span class="o">==</span> <span class="n">null</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">endCoord</span> <span class="o">==</span> <span class="n">null</span><span class="p">))</span> <span class="p">{</span>
+      <span class="kp">throw</span> <span class="kp">new</span> <span class="no">NullPointerException</span><span class="p">(</span><span class="s2">"The 3 arguments: geometry, start coordinate, end coordinate cannot be unassigned!"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="no">Geometry</span> <span class="n">boundary</span> <span class="o">=</span> <span class="n">geom</span><span class="p">.</span><span class="nf">getBoundary</span><span class="p">();</span>
+    <span class="no">Coordinate</span><span class="p">[]</span> <span class="n">coords</span> <span class="o">=</span> <span class="n">null</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">coords</span> <span class="o">=</span> <span class="n">boundary</span><span class="p">.</span><span class="nf">getCoordinates</span><span class="p">())</span> <span class="o">==</span> <span class="n">null</span> <span class="o">||</span> <span class="n">coords</span><span class="p">.</span><span class="nf">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kp">throw</span> <span class="kp">new</span> <span class="no">Exception</span><span class="p">(</span><span class="s2">"The geometry does not have a boundary!"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="no">Coordinate</span> <span class="n">nearestStart</span> <span class="o">=</span> <span class="no">CoordUtil</span><span class="p">.</span><span class="nf">findNearestPoint</span><span class="p">(</span><span class="n">startCoord</span><span class="p">,</span> <span class="n">geom</span><span class="p">);</span>
+    <span class="no">Coordinate</span> <span class="n">nearestEnd</span> <span class="o">=</span> <span class="no">CoordUtil</span><span class="p">.</span><span class="nf">findNearestPoint</span><span class="p">(</span><span class="n">endCoord</span><span class="p">,</span> <span class="n">geom</span><span class="p">);</span>
+    <span class="no">List</span><span class="o">&lt;</span><span class="no">Coordinate</span><span class="o">&gt;</span> <span class="n">coordList</span> <span class="o">=</span> <span class="no">Arrays</span><span class="p">.</span><span class="nf">asList</span><span class="p">(</span><span class="n">coords</span><span class="p">);</span>
+
+    <span class="no">Integer</span> <span class="n">startIdx</span> <span class="o">=</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="n">nearestStart</span><span class="p">);</span>
+    <span class="no">Integer</span> <span class="n">endIdx</span> <span class="o">=</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">indexOf</span><span class="p">(</span><span class="n">nearestEnd</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">startIdx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kp">throw</span> <span class="kp">new</span> <span class="no">Exception</span><span class="p">(</span><span class="s2">"The start coordinate is not in the boundary!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">endIdx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kp">throw</span> <span class="kp">new</span> <span class="no">Exception</span><span class="p">(</span><span class="s2">"The end coordinate is not in the boundary!"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="no">Objects</span><span class="p">.</span><span class="nf">equals</span><span class="p">(</span><span class="n">startIdx</span><span class="p">,</span><span class="n">endIdx</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">endIdx</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span><span class="sr">//</span> <span class="n">temporary</span>
+    <span class="p">}</span>
+    <span class="no">List</span><span class="o">&lt;</span><span class="no">Coordinate</span><span class="o">&gt;</span> <span class="n">clipPath</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">ArrayList</span><span class="o">&lt;</span><span class="no">Coordinate</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="no">Coordinate</span> <span class="n">bestStart</span> <span class="o">=</span> <span class="no">CoordUtil</span><span class="p">.</span><span class="nf">findBestPoint</span><span class="p">(</span><span class="n">startCoord</span><span class="p">,</span> <span class="n">geom</span><span class="p">);</span>
+    <span class="no">Coordinate</span> <span class="n">bestEnd</span> <span class="o">=</span> <span class="no">CoordUtil</span><span class="p">.</span><span class="nf">findBestPoint</span><span class="p">(</span><span class="n">endCoord</span><span class="p">,</span> <span class="n">geom</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">startIdx</span> <span class="o">&lt;</span> <span class="n">endIdx</span><span class="p">){</span>
+      <span class="n">clipPath</span> <span class="o">=</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">subList</span><span class="p">(</span><span class="n">startIdx</span><span class="p">,</span> <span class="n">endIdx</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+      <span class="n">clipPath</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">bestStart</span><span class="p">);</span>
+      <span class="no">List</span><span class="o">&lt;</span><span class="no">Coordinate</span><span class="o">&gt;</span> <span class="n">clipPath1</span> <span class="o">=</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">subList</span><span class="p">(</span><span class="n">startIdx</span><span class="p">,</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+      <span class="no">List</span><span class="o">&lt;</span><span class="no">Coordinate</span><span class="o">&gt;</span> <span class="n">clipPath2</span> <span class="o">=</span> <span class="n">coordList</span><span class="p">.</span><span class="nf">subList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">endIdx</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+      <span class="n">clipPath</span><span class="p">.</span><span class="nf">addAll</span><span class="p">(</span><span class="n">clipPath1</span><span class="p">);</span>
+      <span class="n">clipPath</span><span class="p">.</span><span class="nf">addAll</span><span class="p">(</span><span class="n">clipPath2</span><span class="p">);</span>
+      <span class="n">clipPath</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">bestEnd</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">clipPath</span> <span class="o">!=</span> <span class="n">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">clipPath</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+      <span class="sr">//</span><span class="no">Create</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">line</span> <span class="n">feature</span> <span class="n">using</span> <span class="n">newCoords</span>
+      <span class="no">GeometryFactory</span> <span class="n">geometryFactory</span> <span class="o">=</span> <span class="no">JTSFactoryFinder</span><span class="p">.</span><span class="nf">getGeometryFactory</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">clipPath</span><span class="p">.</span><span class="nf">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="p">.</span><span class="nf">createLineString</span><span class="p">(</span><span class="n">clipPath</span><span class="p">.</span><span class="nf">toArray</span><span class="p">(</span><span class="kp">new</span> <span class="no">Coordinate</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">geometryFactory</span><span class="p">.</span><span class="nf">createPoint</span><span class="p">(</span><span class="n">clipPath</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="kp">catch</span><span class="p">(</span><span class="no">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
+<span class="sr">//</span>      <span class="no">ExceptionUtil</span><span class="p">.</span><span class="nf">throwIllegalStateException</span><span class="p">(</span><span class="n">ex</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+  </section>
+  
+</article>
+
+
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Siying Chen. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519280304428817000"></script>
+
+
+    </div>
+  </body>
+</html>

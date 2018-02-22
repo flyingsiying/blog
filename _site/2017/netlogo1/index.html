@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Agent-based Spatial Pattern Modeling Using NetLogo Part 1</title>
+  <meta name="description" content="I developed this model to simulate the interaction between two groups of agents (or breeds), turtles and grass. This model was inspired by the “Wolf Sheep Predation Model”.
+
+">
+  <meta name="author" content="Siying Chen">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agent-based Spatial Pattern Modeling Using NetLogo Part 1">
+  <meta name="twitter:description" content="I developed this model to simulate the interaction between two groups of agents (or breeds), turtles and grass. This model was inspired by the “Wolf Sheep Predation Model”.
+
+">
+  
+  <meta name="twitter:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Agent-based Spatial Pattern Modeling Using NetLogo Part 1">
+  <meta property="og:description" content="I developed this model to simulate the interaction between two groups of agents (or breeds), turtles and grass. This model was inspired by the “Wolf Sheep Predation Model”.
+
+">
+  <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/blog/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/blog/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="/blog/css/main.css?1519280304428817000">
+  <link rel="canonical" href="http://localhost:4000/blog/2017/netlogo1/">
+  <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/blog/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/blog/" title="link to home of Siying Chen">
+          <img src="/blog/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Siying Chen</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">GIS, sustainable transportation, and more livable cities please.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/blog/#blog" title="link to Siying Chen blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="/blog/#about" title="link to Siying Chen about" class="blog-button">About</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+
+            
+
+            
+
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/flyingsiying" title="flyingsiying on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:flyingsiying@gmail.com" title="Email flyingsiying@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <li class="navigation__item">
+              <a href="/blog/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="8 Jan 2017" class="post-meta__date date">8 Jan 2017</time>
+      
+      &#8226; <span class="post-meta__tags">on <a href="/blog/tags/#GIS,">GIS,</a> <a href="/blog/tags/#NetLogo">NetLogo</a> </span>
+      
+    </div>
+    <h1 class="post-title">Agent-based Spatial Pattern Modeling Using NetLogo Part 1</h1>
+  </header>
+
+  <section class="post">
+    <p>I developed this model to simulate the interaction between two groups of agents (or breeds), <code class="highlighter-rouge">turtles</code> and <code class="highlighter-rouge">grass</code>. This model was inspired by the <a href="http://ccl.northwestern.edu/netlogo/models/WolfSheepPredation">“Wolf Sheep Predation Model”</a>.</p>
+
+<p>Here are some basic rules.</p>
+<ul>
+  <li>A <code class="highlighter-rouge">turtle</code> has energy.</li>
+  <li>When a turtle eats a unit of <code class="highlighter-rouge">grass</code>, it gains energy from grass.</li>
+  <li>When a turtle reproduces a new turtle, it loses energy.</li>
+  <li>When a turtle moves, it loses energy too.</li>
+  <li>If a turtle has no energy, it dies. Otherwise, it survives.</li>
+  <li>Last but not least, the grass might be able to regrow.</li>
+</ul>
+
+<p>Demo:
+<img src="/blog/images/demo/turtle.gif" alt="" /></p>
+
+<p><code class="highlighter-rouge">energy</code> keeps track of when the turtle is ready to reproduce and when it dies.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">turtles</span><span class="o">-</span><span class="n">own</span> <span class="p">[</span><span class="n">energy</span><span class="p">]</span>
+</code></pre>
+</div>
+
+<p>The initial number of turtles is defined by <code class="highlighter-rouge">number</code>. <code class="highlighter-rouge">number-of-ticks</code> decides how many ticks the model runs before it stops.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">setup</span>
+  <span class="n">clear</span><span class="o">-</span><span class="n">all</span>
+  <span class="n">setup</span><span class="o">-</span><span class="n">patches</span>
+  <span class="n">setup</span><span class="o">-</span><span class="n">turtles</span>
+  <span class="n">reset</span><span class="o">-</span><span class="n">ticks</span>
+<span class="k">end</span>
+
+
+<span class="n">to</span> <span class="n">setup</span><span class="o">-</span><span class="n">patches</span>
+  <span class="n">ask</span> <span class="n">patches</span> <span class="p">[</span> <span class="n">set</span> <span class="n">pcolor</span> <span class="n">green</span> <span class="p">]</span>
+<span class="k">end</span>
+
+
+<span class="n">to</span> <span class="n">setup</span><span class="o">-</span><span class="n">turtles</span>
+  <span class="n">create</span><span class="o">-</span><span class="n">turtles</span> <span class="n">number</span> <span class="p">[</span> <span class="n">setxy</span> <span class="n">random</span><span class="o">-</span><span class="n">xcor</span> <span class="n">random</span><span class="o">-</span><span class="n">ycor</span> <span class="p">]</span>
+<span class="k">end</span>
+
+
+<span class="n">to</span> <span class="n">go</span>
+  <span class="k">if</span> <span class="n">ticks</span> <span class="o">&gt;=</span> <span class="n">number</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">ticks</span> <span class="p">[</span> <span class="n">stop</span> <span class="p">]</span>
+  <span class="n">move</span><span class="o">-</span><span class="n">turtles</span>
+  <span class="n">eat</span><span class="o">-</span><span class="n">grass</span>
+  <span class="n">reproduce</span>
+  <span class="n">check</span><span class="o">-</span><span class="n">death</span>
+  <span class="n">regrow</span><span class="o">-</span><span class="n">grass</span>
+  <span class="n">tick</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">energy-to-move</code> defines how much energy a turtle loses when it moves each time.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">move</span><span class="o">-</span><span class="n">turtles</span>
+  <span class="n">ask</span> <span class="n">turtles</span> <span class="p">[</span>
+    <span class="n">right</span> <span class="n">random</span> <span class="mi">360</span>
+    <span class="n">forward</span> <span class="mi">1</span>
+    <span class="n">set</span> <span class="n">energy</span> <span class="n">energy</span> <span class="o">-</span> <span class="n">energy</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">move</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>Users can define how much energy a turtle can get from eating a patch of grass using the <code class="highlighter-rouge">energy-from-grass</code> slider. If the <code class="highlighter-rouge">show-energy</code> switch is on, a label will be placed on each alive turtle to show its energy level. If the <code class="highlighter-rouge">show-energy</code> switch is off, the label is set to be an empty text.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">eat</span><span class="o">-</span><span class="n">grass</span>
+  <span class="n">ask</span> <span class="n">turtles</span> <span class="p">[</span>
+    <span class="k">if</span> <span class="n">pcolor</span> <span class="o">=</span> <span class="n">green</span> <span class="p">[</span>
+      <span class="n">set</span> <span class="n">pcolor</span> <span class="n">black</span>
+      <span class="n">set</span> <span class="n">energy</span> <span class="p">(</span><span class="n">energy</span> <span class="o">+</span> <span class="n">energy</span><span class="o">-</span><span class="n">from</span><span class="o">-</span><span class="n">grass</span><span class="p">)</span>
+    <span class="p">]</span>
+  <span class="n">ifelse</span> <span class="n">show</span><span class="o">-</span><span class="n">energy?</span>
+    <span class="p">[</span> <span class="n">set</span> <span class="n">label</span> <span class="n">energy</span> <span class="p">]</span>
+    <span class="p">[</span> <span class="n">set</span> <span class="n">label</span> <span class="s2">""</span> <span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>If a turtle has enough to reproduce, which means its current energy is higher than the <code class="highlighter-rouge">birth-energy</code> defined, an offspring will be generated by attaining the <code class="highlighter-rouge">birth-energy</code>.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">reproduce</span>
+  <span class="n">ask</span> <span class="n">turtles</span> <span class="p">[</span>
+    <span class="k">if</span> <span class="n">energy</span> <span class="o">&gt;</span> <span class="n">birth</span><span class="o">-</span><span class="n">energy</span> <span class="p">[</span>
+      <span class="n">set</span> <span class="n">energy</span> <span class="n">energy</span> <span class="o">-</span> <span class="n">birth</span><span class="o">-</span><span class="n">energy</span>
+      <span class="n">hatch</span> <span class="mi">1</span> <span class="p">[</span> <span class="n">set</span> <span class="n">energy</span> <span class="n">birth</span><span class="o">-</span><span class="n">energy</span><span class="p">]</span>
+    <span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>A turtle dies if it has no energy left.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">check</span><span class="o">-</span><span class="n">death</span>
+  <span class="n">ask</span> <span class="n">turtles</span> <span class="p">[</span>
+    <span class="k">if</span> <span class="n">energy</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">[</span> <span class="n">die</span> <span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>The grass grows at a rate of <code class="highlighter-rouge">grass-regrowth</code> out of 100. This is visualized by changing the patch color to green.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">to</span> <span class="n">regrow</span><span class="o">-</span><span class="n">grass</span>
+  <span class="n">ask</span> <span class="n">patches</span> <span class="p">[</span>
+    <span class="k">if</span> <span class="n">random</span> <span class="mi">100</span> <span class="o">&lt;</span> <span class="n">grass</span><span class="o">-</span><span class="n">regrowth</span> <span class="p">[</span> <span class="n">set</span> <span class="n">pcolor</span> <span class="n">green</span> <span class="p">]</span>
+  <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+
+  </section>
+  
+</article>
+
+
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Siying Chen. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519280304428817000"></script>
+
+
+    </div>
+  </body>
+</html>

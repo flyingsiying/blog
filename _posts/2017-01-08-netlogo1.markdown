@@ -15,7 +15,7 @@ Here are some basic rules.
 * Last but not least, the grass might be able to regrow.
 
 Demo:
-![](/images/demo/turtle.gif)
+![](/blog/images/demo/turtle.gif)
 
 `energy` keeps track of when the turtle is ready to reproduce and when it dies.
 ``` ruby

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Spatial Point Pattern Analysis Using K-Function</title>
+  <meta name="description" content="This python-based program examines the spatial pattern of airports in California by using K-function. The airport data at the National Atlas website includes more than 900 points in the country. This program uses airports in California as a subset to analyze the spatial pattern of these airports.
+
+">
+  <meta name="author" content="Siying Chen">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Spatial Point Pattern Analysis Using K-Function">
+  <meta name="twitter:description" content="This python-based program examines the spatial pattern of airports in California by using K-function. The airport data at the National Atlas website includes more than 900 points in the country. This program uses airports in California as a subset to analyze the spatial pattern of these airports.
+
+">
+  
+  <meta name="twitter:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Spatial Point Pattern Analysis Using K-Function">
+  <meta property="og:description" content="This python-based program examines the spatial pattern of airports in California by using K-function. The airport data at the National Atlas website includes more than 900 points in the country. This program uses airports in California as a subset to analyze the spatial pattern of these airports.
+
+">
+  <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/blog/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/blog/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="/blog/css/main.css?1519280304428817000">
+  <link rel="canonical" href="http://localhost:4000/blog/2016/spatial-pattern/">
+  <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/blog/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/blog/" title="link to home of Siying Chen">
+          <img src="/blog/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Siying Chen</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">GIS, sustainable transportation, and more livable cities please.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/blog/#blog" title="link to Siying Chen blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="/blog/#about" title="link to Siying Chen about" class="blog-button">About</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+
+            
+
+            
+
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/flyingsiying" title="flyingsiying on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:flyingsiying@gmail.com" title="Email flyingsiying@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <li class="navigation__item">
+              <a href="/blog/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="22 Apr 2016" class="post-meta__date date">22 Apr 2016</time>
+      
+      &#8226; <span class="post-meta__tags">on <a href="/blog/tags/#GIS,">GIS,</a> <a href="/blog/tags/#Python">Python</a> </span>
+      
+    </div>
+    <h1 class="post-title">Spatial Point Pattern Analysis Using K-Function</h1>
+  </header>
+
+  <section class="post">
+    <p>This python-based program examines the spatial pattern of airports in California by using K-function. The airport data at the National Atlas website includes more than 900 points in the country. This program uses airports in California as a subset to analyze the spatial pattern of these airports.</p>
+
+<p>Visualization:
+<img src="/blog/images/demo/airports.png" alt="" /></p>
+
+<p>Import libraries and data. The data used by this program can be found <a href="https://github.com/flyingsiying/spatial-pattern/tree/master/data">here</a>. Before handling the data, this program checks projection used in ’airprtx010g.shp’ and ‘District_201511.shp’ respectively. Since both shapefiles use the same projection, GCS_North_American_1983, there is no need to transform projection.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">import</span> <span class="n">csv</span>
+<span class="n">import</span> <span class="n">numpy</span>
+<span class="n">from</span> <span class="n">osgeo</span> <span class="n">import</span> <span class="n">ogr</span>
+<span class="n">from</span> <span class="n">osgeo</span> <span class="n">import</span> <span class="n">osr</span>
+<span class="n">import</span> <span class="n">matplotlib</span><span class="p">.</span><span class="nf">pyplot</span> <span class="n">as</span> <span class="n">plt</span>
+<span class="n">import</span> <span class="n">matplotlib</span><span class="p">.</span><span class="nf">pyplot</span> <span class="n">as</span> <span class="n">plt</span>
+<span class="n">from</span> <span class="n">point</span> <span class="n">import</span> <span class="o">*</span>
+<span class="n">from</span> <span class="n">kdtree1</span> <span class="n">import</span> <span class="o">*</span>
+<span class="n">from</span> <span class="n">extent</span> <span class="n">import</span> <span class="o">*</span>
+<span class="n">from</span> <span class="n">kfunction</span> <span class="n">import</span> <span class="o">*</span>
+<span class="n">from</span> <span class="n">drawgeometry</span> <span class="n">import</span> <span class="o">*</span>
+
+<span class="c1"># check projection</span>
+<span class="nb">print</span> <span class="s1">'*****check projection*****'</span>
+<span class="nb">print</span> <span class="s1">''</span>
+<span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="no">GetDriverByName</span><span class="p">(</span><span class="s2">"ESRI Shapefile"</span><span class="p">)</span>
+<span class="n">shapefile</span> <span class="o">=</span> <span class="s1">'data/District_201511.shp'</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="no">Open</span><span class="p">(</span><span class="n">shapefile</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">vector</span><span class="o">.</span><span class="no">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">spatialRef</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="no">GetSpatialRef</span><span class="p">()</span>
+<span class="nb">print</span> <span class="n">spatialRef</span>
+<span class="nb">print</span> <span class="s1">''</span>
+<span class="n">shapefile1</span> <span class="o">=</span> <span class="s1">'data/airport/airprtx010g.shp'</span>
+<span class="n">vector1</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="no">Open</span><span class="p">(</span><span class="n">shapefile1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">layer1</span> <span class="o">=</span> <span class="n">vector</span><span class="o">.</span><span class="no">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">spatialRef1</span> <span class="o">=</span> <span class="n">layer1</span><span class="o">.</span><span class="no">GetSpatialRef</span><span class="p">()</span>
+<span class="nb">print</span> <span class="n">spatialRef1</span>
+<span class="nb">print</span> <span class="s1">''</span>
+<span class="nb">print</span> <span class="s1">'*****done*****'</span>
+
+<span class="c1"># import data from csv file</span>
+<span class="n">airports</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lat</span> <span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="nf">genfromtxt</span><span class="p">(</span><span class="s1">'data/airport.csv'</span><span class="p">,</span> <span class="n">usecols</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
+<span class="n">lon</span> <span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="nf">genfromtxt</span><span class="p">(</span><span class="s1">'data/airport.csv'</span><span class="p">,</span> <span class="n">usecols</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
+<span class="n">states</span> <span class="o">=</span><span class="n">numpy</span><span class="p">.</span><span class="nf">genfromtxt</span><span class="p">(</span><span class="s1">'data/airport.csv'</span><span class="p">,</span> <span class="n">usecols</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">','</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">range</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">states</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>    <span class="c1"># 6 is the index number of CA in the shapefile</span>
+        <span class="n">airports</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">lon</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">lat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+</code></pre>
+</div>
+
+<p>The program extracts the data from the 7th(index of states), 11th(latitude), and 12th(longitude) columns. Selected data will be store in a list named ‘airports’. Then, all data representing airports in California will be filtered. This part could be replaced by other index numbers if you want to look into airports in other states. Point pattern analysis is based on a radius stepping on 10 intervals divided by 2/3 of the width the area.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># point pattern analysis</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="no">Point</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="k">in</span> <span class="n">airports</span><span class="p">]</span>
+<span class="n">extent</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="no">GetExtent</span><span class="p">()</span>
+<span class="n">area</span> <span class="o">=</span> <span class="no">Extent</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xmax</span><span class="o">=</span><span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ymin</span><span class="o">=</span><span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ymax</span><span class="o">=</span><span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="n">density</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="n">area</span><span class="p">.</span><span class="nf">area</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">kdtree2</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">min</span><span class="p">([</span><span class="n">area</span><span class="p">.</span><span class="nf">xmax</span><span class="o">-</span><span class="n">area</span><span class="p">.</span><span class="nf">xmin</span><span class="p">,</span> <span class="n">area</span><span class="p">.</span><span class="nf">ymax</span><span class="o">-</span><span class="n">area</span><span class="p">.</span><span class="nf">ymin</span><span class="p">])</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="o">/</span><span class="mi">10</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="p">[</span> <span class="n">d</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">lds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">d</span> <span class="k">in</span> <span class="n">ds</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="k">in</span> <span class="n">enumerate</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+    <span class="k">for</span> <span class="nb">p</span> <span class="k">in</span> <span class="ss">points:
+        </span><span class="n">ld</span> <span class="o">=</span> <span class="n">kfunc</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">p</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">density</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">ld</span>
+<span class="n">lds</span> <span class="o">=</span> <span class="p">[</span><span class="n">ld</span><span class="o">/</span><span class="n">n</span> <span class="k">for</span> <span class="n">ld</span> <span class="k">in</span> <span class="n">lds</span><span class="p">]</span>
+
+<span class="c1"># plot kfunction</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lds</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Data'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xlabel</span><span class="p">(</span><span class="s1">'Radius ($d$)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">ylabel</span><span class="p">(</span><span class="s1">'$L(d)$'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="s1">'K Function ($\lambda$ = {0:5.2f})'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">density</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">plt</span><span class="p">.</span><span class="nf">xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">plt</span><span class="p">.</span><span class="nf">xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Random'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+<span class="c1"># plot airport distribution</span>
+<span class="n">draw_layer</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">vector</span><span class="o">.</span><span class="no">Destroy</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="s1">'Airport distribution in California'</span><span class="p">)</span>
+<span class="n">airports_lat</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">airports</span><span class="p">]</span>
+<span class="n">airports_lon</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">airports</span><span class="p">]</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">scatter</span><span class="p">(</span><span class="n">airports_lat</span><span class="p">,</span> <span class="n">airports_lon</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+
+</code></pre>
+</div>
+
+<ul>
+  <li>
+    <p>Test Results:
+<img src="/blog/images/demo/kfunction.png" alt="" />
+The observed spatial pattern curve is above the expected random spatial pattern line at low radius and L(d), which indicates statistically significant clustering at smaller distance. However, at high radius and L(d), the observed spatial pattern curve is below the expected random spatial pattern line, which indicates statistically significant dispersion at larger distances. Overall, 2/3 part of observed segment is above the expected random spatial pattern.</p>
+  </li>
+  <li>
+    <p>Interpreting K Function Results:
+  As referred from the test result above, the spatial pattern of airports in California is more clustered than chance would have it.</p>
+  </li>
+  <li>
+    <p>Limitation:
+ According this program, the test area was built based on the envelope of all airports, which significantly increased the actual area of California.</p>
+  </li>
+</ul>
+
+  </section>
+  
+</article>
+
+
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Siying Chen. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519280304428817000"></script>
+
+
+    </div>
+  </body>
+</html>

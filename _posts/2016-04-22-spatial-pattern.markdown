@@ -1,5 +1,5 @@
 ---
-title:  "Spatial Point Pattern Analysis Using K-d Tree"
+title:  "Spatial Point Pattern Analysis Using K-Function"
 date:   2016-04-22 11:05:23
 categories: GIS
 tags: GIS, Python
@@ -7,31 +7,10 @@ tags: GIS, Python
 
 This python-based program examines the spatial pattern of airports in California by using K-function. The airport data at the National Atlas website includes more than 900 points in the country. This program uses airports in California as a subset to analyze the spatial pattern of these airports.
 
-* Data:
-    All data is stored in the ‘data’ folder.
-    - The original airport shape file is stored in the ‘airport’ folder
-    - ‘airport.csv’ is obtained from the original airport shape file, exported from QGIS
-    - ‘District_201511.shp’ provides spatial data of California
+Visualization:
+![](/blog/images/demo/airports.png)
 
-* Algorithm:
-    First, the program imports data from csv file and only extracts data in the 7th(index of states), 11th(latitude), and 12th(longitude) columns. Selected data will be store in a list named ‘airports’. Then, all data representing airports in California will be filtered. This part could be replaced by other index number if you want to look into airports in other states. Point pattern analysis is based on allowing the radius range from 10 intervals divided by 2/3 of the length of one side of the area (the same as demonstrated on class). Other algorithm, such as the definition of K-function, the construction of a balanced kdtree, has already been given on class.
-
-* Projection:
-    Before handling data, this program checks projection used in ’airprtx010g.shp’ and ‘District_201511.shp’ respectively. Since both shapefiles use the same projection, GCS_North_American_1983, there is no need to transform projection in any data.
-
-* Test Results:
-    As showed on the ‘kfunction.png’, observed spatial pattern curve is above the expected random spatial pattern line at low radius and L(d), which indicates statistically significant clustering at smaller distance. However, at high radius and L(d), the observed spatial pattern curve is below the expected random spatial pattern line, which indicates statistically significant dispersion at larger distances. Overall, 2/3 part of observed segment is above the expected random spatial pattern.
-
-* Interpreting K Function Results:
-    As referred from the test result above, the spatial pattern of airports in California is more clustered than chance would have it.
-
-* Limitation:
-   In this program, the test area was built based on the envelope of all airports, which significantly increased the actual area of California.  
-
-
-Demo:
-![](/images/demo/turtle.gif)
-
+Import libraries and data. The data used by this program can be found [here](https://github.com/flyingsiying/spatial-pattern/tree/master/data). Before handling the data, this program checks projection used in ’airprtx010g.shp’ and ‘District_201511.shp’ respectively. Since both shapefiles use the same projection, GCS_North_American_1983, there is no need to transform projection.
 
 ```ruby
 import csv
@@ -72,7 +51,11 @@ states =numpy.genfromtxt('data/airport.csv', usecols = (7), skiprows=1,delimiter
 for i in range(len(states)):
     if states[i] == 6:    # 6 is the index number of CA in the shapefile
         airports.append((lon[i],lat[i]))
+```
 
+The program extracts the data from the 7th(index of states), 11th(latitude), and 12th(longitude) columns. Selected data will be store in a list named ‘airports’. Then, all data representing airports in California will be filtered. This part could be replaced by other index numbers if you want to look into airports in other states. Point pattern analysis is based on a radius stepping on 10 intervals divided by 2/3 of the width the area.
+
+```ruby
 # point pattern analysis
 points = [Point(d[0],d[1]) for d in airports]
 extent = layer.GetExtent()
@@ -109,4 +92,12 @@ plt.show()
 
 ```
 
-["Wolf Sheep Predation Model"]: http://ccl.northwestern.edu/netlogo/models/WolfSheepPredation
+* Test Results:
+![](/blog/images/demo/kfunction.png)
+The observed spatial pattern curve is above the expected random spatial pattern line at low radius and L(d), which indicates statistically significant clustering at smaller distance. However, at high radius and L(d), the observed spatial pattern curve is below the expected random spatial pattern line, which indicates statistically significant dispersion at larger distances. Overall, 2/3 part of observed segment is above the expected random spatial pattern.
+
+* Interpreting K Function Results:
+    As referred from the test result above, the spatial pattern of airports in California is more clustered than chance would have it.
+
+* Limitation:
+   According this program, the test area was built based on the envelope of all airports, which significantly increased the actual area of California.  

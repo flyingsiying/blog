@@ -26,13 +26,13 @@ changes.
 
 
 Demo 1 - Styling a [`SymbolMarkerSymbol`](https://developers.arcgis.com/javascript/3/jsapi/simplemarkersymbol-amd.html)
-![](/images/demo/webgis-symbol-marker.gif)
+![](/blog/images/demo/webgis-symbol-marker.gif)
 
 
 Demo 2 - Converting a [`SymbolMarkerSymbol`](https://developers.arcgis.com/javascript/3/jsapi/simplemarkersymbol-amd.html)
 to a [`PictureMarkerSymbol`](https://developers.arcgis.com/javascript/3/jsapi/picturemarkersymbol-amd.html)
-![](/images/demo/webgis-symbol-picture.gif)
+![](/blog/images/demo/webgis-symbol-picture.gif)
 
 
 Demo 3 - Playing with [`UniqueValueRenderer`](https://developers.arcgis.com/javascript/3/jsapi/uniquevaluerenderer-amd.html)
-![](/images/demo/webgis-symbol-unique.gif)
+![](/blog/images/demo/webgis-symbol-unique.gif)

@@ -20,8 +20,8 @@ Here is some practice I made. In my case, I compared two ways of handling a KML
 file that contains an `overlay` tag.   
 
 Demo 1 - Using [`KMLLayer`](https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html)
-![](/images/demo/kml-by-url.gif)
+![](/blog/images/demo/kml-by-url.gif)
 
 
 Demo 2 - Using my own KML parser
-![](/images/demo/kml-google.gif)
+![](/blog/images/demo/kml-google.gif)

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+  <title>Creating Customizable Symbology Function for Web GIS</title>
+  <meta name="description" content="Creating a symbol editing window on the Web GIS Application simply mimics the
+process of symbolozing a layer in the ArcMap software. Users can symbolize
+feature layers in different ways depending on the type of data they are showing.
+
+">
+  <meta name="author" content="Siying Chen">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Creating Customizable Symbology Function for Web GIS">
+  <meta name="twitter:description" content="Creating a symbol editing window on the Web GIS Application simply mimics the
+process of symbolozing a layer in the ArcMap software. Users can symbolize
+feature layers in different ways depending on the type of data they are showing.
+
+">
+  
+  <meta name="twitter:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Creating Customizable Symbology Function for Web GIS">
+  <meta property="og:description" content="Creating a symbol editing window on the Web GIS Application simply mimics the
+process of symbolozing a layer in the ArcMap software. Users can symbolize
+feature layers in different ways depending on the type of data they are showing.
+
+">
+  <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
+
+  <link rel="apple-touch-icon" sizes="57x57" href="/blog/images/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/blog/images/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/blog/images/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/blog/images/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/blog/images/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/blog/images/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/blog/images/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/blog/images/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/blog/images/favicons/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/blog/images/favicons/manifest.json">
+  <link rel="shortcut icon" href="/blog/images/favicons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  
+  <link rel="stylesheet" href="/blog/css/main.css?1519280304428817000">
+  <link rel="canonical" href="http://localhost:4000/blog/2017/webgis-symbol/">
+  <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
+</head>
+
+
+  <body>
+    <span class="mobile btn-mobile-menu">
+  <i class="icon icon-list btn-mobile-menu__icon"></i>
+  <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+</span>
+
+<header class="panel-cover" style="background-image: url(/blog/images/cover.jpg)">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <a href="/blog/" title="link to home of Siying Chen">
+          <img src="/blog/images/profile.jpg" class="user-image" alt="My Profile Photo">
+          <h1 class="panel-cover__title panel-title">Siying Chen</h1>
+        </a>
+        <hr class="panel-cover__divider">
+        <p class="panel-cover__description">GIS, sustainable transportation, and more livable cities please.</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary">
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/blog/#blog" title="link to Siying Chen blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="/blog/#about" title="link to Siying Chen about" class="blog-button">About</a></li>
+            </ul>
+          </nav>
+
+          <nav class="cover-navigation navigation--social">
+            <ul class="navigation">
+
+            
+
+            
+
+            
+
+            
+              <!-- GitHub -->
+              <li class="navigation__item">
+                <a href="https://www.github.com/flyingsiying" title="flyingsiying on GitHub" target="_blank">
+                  <i class="icon icon-social-github"></i>
+                  <span class="label">GitHub</span>
+                </a>
+              </li>
+            
+
+            
+              <!-- Email -->
+              <li class="navigation__item">
+                <a href="mailto:flyingsiying@gmail.com" title="Email flyingsiying@gmail.com" target="_blank">
+                  <i class="icon icon-mail"></i>
+                  <span class="label">Email</span>
+                </a>
+              </li>
+            
+
+            <!-- RSS -->
+            <li class="navigation__item">
+              <a href="/blog/feed.xml" title="Subscribe" target="_blank">
+                <i class="icon icon-rss"></i>
+                <span class="label">RSS</span>
+              </a>
+            </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+      <div class="content-wrapper__inner">
+        <article class="post-container post-container--single">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="7 Oct 2017" class="post-meta__date date">7 Oct 2017</time>
+      
+      &#8226; <span class="post-meta__tags">on <a href="/blog/tags/#GIS,">GIS,</a> <a href="/blog/tags/#JavaScript,">JavaScript,</a> <a href="/blog/tags/#Web">Web</a> <a href="/blog/tags/#Application">Application</a> </span>
+      
+    </div>
+    <h1 class="post-title">Creating Customizable Symbology Function for Web GIS</h1>
+  </header>
+
+  <section class="post">
+    <p>Creating a symbol editing window on the Web GIS Application simply mimics the
+process of symbolozing a layer in the ArcMap software. Users can symbolize
+feature layers in different ways depending on the type of data they are showing.</p>
+
+<p>To summarize how I made this functionality work:</p>
+<ul>
+  <li>A dialog object is created in JavaScript to allow a user to enter different
+settings, such as fill color or outline color.</li>
+  <li>When a user clicks the save button, all the symbol settings will be saved as a
+ configuration and attached to the layers.</li>
+  <li>At the same time, a JavaScript function, <code class="highlighter-rouge">renderSymbology</code>, will be called to
+render new symbols depending on render type.</li>
+  <li>Another JavaScript function, <code class="highlighter-rouge">makeLegend</code>, will be called to fire any legend
+changes.</li>
+  <li>Last but not least, when a user reloads the application, layers will appear as
+ how the user defines it to be from the last editing. <code class="highlighter-rouge">renderSymbology</code> and <code class="highlighter-rouge">makeLegend</code>
+ functions were called again to generate the customized symbols by grabbing the updated
+ symbol configuration that is attached to each layer.</li>
+</ul>
+
+<p>Demo 1 - Styling a <a href="https://developers.arcgis.com/javascript/3/jsapi/simplemarkersymbol-amd.html"><code class="highlighter-rouge">SymbolMarkerSymbol</code></a>
+<img src="/blog/images/demo/webgis-symbol-marker.gif" alt="" /></p>
+
+<p>Demo 2 - Converting a <a href="https://developers.arcgis.com/javascript/3/jsapi/simplemarkersymbol-amd.html"><code class="highlighter-rouge">SymbolMarkerSymbol</code></a>
+to a <a href="https://developers.arcgis.com/javascript/3/jsapi/picturemarkersymbol-amd.html"><code class="highlighter-rouge">PictureMarkerSymbol</code></a>
+<img src="/blog/images/demo/webgis-symbol-picture.gif" alt="" /></p>
+
+<p>Demo 3 - Playing with <a href="https://developers.arcgis.com/javascript/3/jsapi/uniquevaluerenderer-amd.html"><code class="highlighter-rouge">UniqueValueRenderer</code></a>
+<img src="/blog/images/demo/webgis-symbol-unique.gif" alt="" /></p>
+
+  </section>
+  
+</article>
+
+
+
+      </div>
+
+      <footer class="footer">
+  <span class="footer__copyright">&copy; 2018 Siying Chen. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519280304428817000"></script>
+
+
+    </div>
+  </body>
+</html>
