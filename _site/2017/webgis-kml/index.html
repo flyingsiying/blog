@@ -7,10 +7,8 @@
   
 
   <title>Handling KMLs for Web GIS</title>
-  <meta name="description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
-me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
-must take a KML url. So if a user wants to use a KML file to show their spatial
-objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+  <meta name="description" content="Here is some practice I made to load KMLs in Web GIS. In my case, I compared two ways of handling a KML
+file that contains a KML overlay tag.
 
 ">
   <meta name="author" content="Siying Chen">
@@ -22,10 +20,8 @@ objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Handling KMLs for Web GIS">
-  <meta name="twitter:description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
-me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
-must take a KML url. So if a user wants to use a KML file to show their spatial
-objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+  <meta name="twitter:description" content="Here is some practice I made to load KMLs in Web GIS. In my case, I compared two ways of handling a KML
+file that contains a KML overlay tag.
 
 ">
   
@@ -33,10 +29,8 @@ objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Handling KMLs for Web GIS">
-  <meta property="og:description" content="When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
-me explain. ArcGIS API has this KMLLayer thing which is so simple to use but it
-must take a KML url. So if a user wants to use a KML file to show their spatial
-objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
+  <meta property="og:description" content="Here is some practice I made to load KMLs in Web GIS. In my case, I compared two ways of handling a KML
+file that contains a KML overlay tag.
 
 ">
   <meta property="og:image" content="/blog/images/favicons/favicon-194x194.png" />
@@ -61,7 +55,7 @@ objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
   <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
   
-  <link rel="stylesheet" href="/blog/css/main.css?1519366749069438000">
+  <link rel="stylesheet" href="/blog/css/main.css?1519889446931534000">
   <link rel="canonical" href="http://localhost:4000/blog/2017/webgis-kml/">
   <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
 </head>
@@ -160,24 +154,22 @@ objects, he needs to upload his KML somewhere before adding a KMLLayer layer.
   </header>
 
   <section class="post">
-    <p>When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
-me explain. ArcGIS API has this <code class="highlighter-rouge">KMLLayer</code> thing which is so simple to use but it
-must take a KML url. So if a user wants to use a KML file to show their spatial
-objects, he needs to upload his KML somewhere before adding a <code class="highlighter-rouge">KMLLayer</code> layer.</p>
+    <p>Here is some practice I made to load KMLs in Web GIS. In my case, I compared two ways of handling a KML
+file that contains a KML <code class="highlighter-rouge">overlay</code> tag.</p>
 
-<p>So, is there an option to show KMLs on a web app as easy as it is when someone
-drags a KML to Google Earth and let the feature show. A do-able but time-consuming
-way to achieve this is to create our own KML parser. After parsing the KML, we can
-even have more flexibility to handle those KML-formatted spatial objects.
-We can add them as whatever layers we want, depending on data type.</p>
+<p>Demo 1 - Using ArcGIS <a href="https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html"><code class="highlighter-rouge">KMLLayer</code></a></p>
 
-<p>Here is some practice I made. In my case, I compared two ways of handling a KML
-file that contains an <code class="highlighter-rouge">overlay</code> tag.</p>
+<p>What I like about: dead easy</p>
 
-<p>Demo 1 - Using <a href="https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html"><code class="highlighter-rouge">KMLLayer</code></a>
-<img src="/blog/images/demo/kml-by-url.gif" alt="" /></p>
+<p>What I dislike about: KMLs need to be uploaded somewhere before adding as a <code class="highlighter-rouge">KMLLayer</code> layer.</p>
 
-<p>Demo 2 - Using my own KML parser
+<p><img src="/blog/images/demo/kml-by-url.gif" alt="" /></p>
+
+<p>Demo 2 - Using my own KML parser</p>
+
+<p>What I like about: I can just drag in my KMLs from local; more flexibility of handling KML-formatted spatial objects</p>
+
+<p>What I dislike about: I have to test with loads of KMLs in order to get a robust parser
 <img src="/blog/images/demo/kml-google.gif" alt="" /></p>
 
   </section>
@@ -193,7 +185,7 @@ file that contains an <code class="highlighter-rouge">overlay</code> tag.</p>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/blog/js/main.js?1519366749069438000"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519889446931534000"></script>
 
 
     </div>

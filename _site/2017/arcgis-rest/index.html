@@ -52,7 +52,7 @@
   <meta name="msapplication-TileImage" content="/blog/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
   
-  <link rel="stylesheet" href="/blog/css/main.css?1519366749069438000">
+  <link rel="stylesheet" href="/blog/css/main.css?1519889446931534000">
   <link rel="canonical" href="http://localhost:4000/blog/2017/arcgis-rest/">
   <link rel="alternate" type="application/rss+xml" title="Siying Chen" href="/blog/feed.xml">
 </head>
@@ -154,21 +154,21 @@
     <p>ArcGIS REST Service Parser is an Oracle SQL-driven application I designed for managing published ArcGIS REST Services.</p>
 
 <p>What is an ArcGIS REST Service?
-An ArcGIS REST Service is a GIS Service published on an ArcGIS Service and considered a resource and can be access through a URL
-such as https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer (USGS). This URL is also known as REST endpoint.
+An ArcGIS REST Service is a GIS Service published on an ArcGIS server and considered a resource and can be accessed through a URL
+such as <a href="https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer">https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer (USGS)</a>. This URL is also known as REST endpoint.
 Each ArcGIS REST Service usually has properties that describe it, operations that can be performed on it, and child resources.</p>
 
 <p>How does my application work? It consists of two major parts - parsing and searching.</p>
 
-<p>First, a user can parse in his service(s) by simply entering the service URL. This URL can be at the server level or the layer level.
-He can also choose whether to create thumbnail images or assign a rank to his service(s). If the thumbnail option is chosen, the parsing process
-would create an overview visualization for this service.<br />
-<img src="/blog/images/demo/arcgis-rest-1.gif" alt="" /></p>
+<p>First, a user can parse in services by simply entering the service URL. This URL can be at either server or layer level.
+A user can also decide whether to create thumbnail images or assign a rank to those services. If the thumbnail option is checked, the parsing process would create an overview visualization for this service.</p>
+
+<p><img src="/blog/images/demo/arcgis-rest-1.gif" alt="" /></p>
 
 <p>Then, a user can search any parsed services in the database by keywords.
 <img src="/blog/images/demo/arcgis-rest-2.gif" alt="" /></p>
 
-<p>Last but not least, a user can click onto each search result to enter the Web GIS interface so that he could play around with the layer.
+<p>Last but not least, a user can click onto each search result to enter the Web GIS interface and play around with the selected layer.
 <img src="/blog/images/demo/arcgis-rest-3.gif" alt="" /></p>
 
   </section>
@@ -184,7 +184,7 @@ would create an overview visualization for this service.<br />
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="/blog/js/main.js?1519366749069438000"></script>
+<script type="text/javascript" src="/blog/js/main.js?1519889446931534000"></script>
 
 
     </div>

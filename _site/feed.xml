@@ -5,8 +5,8 @@
     <description>GIS, sustainable transportation, and more livable cities please.</description>
     <link>http://localhost:4000/blog/</link>
     <atom:link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 22 Feb 2018 22:19:09 -0800</pubDate>
-    <lastBuildDate>Thu, 22 Feb 2018 22:19:09 -0800</lastBuildDate>
+    <pubDate>Wed, 28 Feb 2018 23:30:46 -0800</pubDate>
+    <lastBuildDate>Wed, 28 Feb 2018 23:30:46 -0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
     
       <item>
@@ -14,21 +14,21 @@
         <description>&lt;p&gt;ArcGIS REST Service Parser is an Oracle SQL-driven application I designed for managing published ArcGIS REST Services.&lt;/p&gt;
 
 &lt;p&gt;What is an ArcGIS REST Service?
-An ArcGIS REST Service is a GIS Service published on an ArcGIS Service and considered a resource and can be access through a URL
-such as https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer (USGS). This URL is also known as REST endpoint.
+An ArcGIS REST Service is a GIS Service published on an ArcGIS server and considered a resource and can be accessed through a URL
+such as &lt;a href=&quot;https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer&quot;&gt;https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer (USGS)&lt;/a&gt;. This URL is also known as REST endpoint.
 Each ArcGIS REST Service usually has properties that describe it, operations that can be performed on it, and child resources.&lt;/p&gt;
 
 &lt;p&gt;How does my application work? It consists of two major parts - parsing and searching.&lt;/p&gt;
 
-&lt;p&gt;First, a user can parse in his service(s) by simply entering the service URL. This URL can be at the server level or the layer level.
-He can also choose whether to create thumbnail images or assign a rank to his service(s). If the thumbnail option is chosen, the parsing process
-would create an overview visualization for this service.&lt;br /&gt;
-&lt;img src=&quot;/blog/images/demo/arcgis-rest-1.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;First, a user can parse in services by simply entering the service URL. This URL can be at either server or layer level.
+A user can also decide whether to create thumbnail images or assign a rank to those services. If the thumbnail option is checked, the parsing process would create an overview visualization for this service.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/blog/images/demo/arcgis-rest-1.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Then, a user can search any parsed services in the database by keywords.
 &lt;img src=&quot;/blog/images/demo/arcgis-rest-2.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Last but not least, a user can click onto each search result to enter the Web GIS interface so that he could play around with the layer.
+&lt;p&gt;Last but not least, a user can click onto each search result to enter the Web GIS interface and play around with the selected layer.
 &lt;img src=&quot;/blog/images/demo/arcgis-rest-3.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 13 Nov 2017 13:05:23 -0800</pubDate>
@@ -52,24 +52,22 @@ would create an overview visualization for this service.&lt;br /&gt;
     
       <item>
         <title>Handling KMLs for Web GIS</title>
-        <description>&lt;p&gt;When it comes to handling KMLs in Web GIS, it is always a conundrum for me. Let
-me explain. ArcGIS API has this &lt;code class=&quot;highlighter-rouge&quot;&gt;KMLLayer&lt;/code&gt; thing which is so simple to use but it
-must take a KML url. So if a user wants to use a KML file to show their spatial
-objects, he needs to upload his KML somewhere before adding a &lt;code class=&quot;highlighter-rouge&quot;&gt;KMLLayer&lt;/code&gt; layer.&lt;/p&gt;
+        <description>&lt;p&gt;Here is some practice I made to load KMLs in Web GIS. In my case, I compared two ways of handling a KML
+file that contains a KML &lt;code class=&quot;highlighter-rouge&quot;&gt;overlay&lt;/code&gt; tag.&lt;/p&gt;
 
-&lt;p&gt;So, is there an option to show KMLs on a web app as easy as it is when someone
-drags a KML to Google Earth and let the feature show. A do-able but time-consuming
-way to achieve this is to create our own KML parser. After parsing the KML, we can
-even have more flexibility to handle those KML-formatted spatial objects.
-We can add them as whatever layers we want, depending on data type.&lt;/p&gt;
+&lt;p&gt;Demo 1 - Using ArcGIS &lt;a href=&quot;https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;KMLLayer&lt;/code&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Here is some practice I made. In my case, I compared two ways of handling a KML
-file that contains an &lt;code class=&quot;highlighter-rouge&quot;&gt;overlay&lt;/code&gt; tag.&lt;/p&gt;
+&lt;p&gt;What I like about: dead easy&lt;/p&gt;
 
-&lt;p&gt;Demo 1 - Using &lt;a href=&quot;https://developers.arcgis.com/javascript/3/jsapi/kmllayer-amd.html&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;KMLLayer&lt;/code&gt;&lt;/a&gt;
-&lt;img src=&quot;/blog/images/demo/kml-by-url.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;What I dislike about: KMLs need to be uploaded somewhere before adding as a &lt;code class=&quot;highlighter-rouge&quot;&gt;KMLLayer&lt;/code&gt; layer.&lt;/p&gt;
 
-&lt;p&gt;Demo 2 - Using my own KML parser
+&lt;p&gt;&lt;img src=&quot;/blog/images/demo/kml-by-url.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Demo 2 - Using my own KML parser&lt;/p&gt;
+
+&lt;p&gt;What I like about: I can just drag in my KMLs from local; more flexibility of handling KML-formatted spatial objects&lt;/p&gt;
+
+&lt;p&gt;What I dislike about: I have to test with loads of KMLs in order to get a robust parser
 &lt;img src=&quot;/blog/images/demo/kml-google.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Oct 2017 13:00:00 -0700</pubDate>
@@ -94,10 +92,10 @@ file that contains an &lt;code class=&quot;highlighter-rouge&quot;&gt;overlay&lt
       <item>
         <title>Creating Customizable Symbology Function for Web GIS</title>
         <description>&lt;p&gt;Creating a symbol editing window on the Web GIS Application simply mimics the
-process of symbolozing a layer in the ArcMap software. Users can symbolize
-feature layers in different ways depending on the type of data they are showing.&lt;/p&gt;
+process of symbolozing a layer in ArcMap Desktop. Users can symbolize
+feature layers in different ways depending on the type of data.&lt;/p&gt;
 
-&lt;p&gt;To summarize how I made this functionality work:&lt;/p&gt;
+&lt;p&gt;To summarize how I build this functionality:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;A dialog object is created in JavaScript to allow a user to enter different
 settings, such as fill color or outline color.&lt;/li&gt;
@@ -581,27 +579,6 @@ end
         
         
         <category>GIS</category>
-        
-      </item>
-    
-      <item>
-        <title>Street Nature Score</title>
-        <description>
-</description>
-        <pubDate>Tue, 31 May 2016 11:00:00 -0700</pubDate>
-        <link>http://localhost:4000/blog/2016/steet-nature-score/</link>
-        <guid isPermaLink="true">http://localhost:4000/blog/2016/steet-nature-score/</guid>
-        
-        <category>GIS,</category>
-        
-        <category>Web</category>
-        
-        <category>Application</category>
-        
-        
-        <category>Web</category>
-        
-        <category>Application</category>
         
       </item>
     

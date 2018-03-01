@@ -7,10 +7,10 @@ tags: GIS, JavaScript, Web Application
 
 
 Creating a symbol editing window on the Web GIS Application simply mimics the
-process of symbolozing a layer in the ArcMap software. Users can symbolize
-feature layers in different ways depending on the type of data they are showing.
+process of symbolozing a layer in ArcMap Desktop. Users can symbolize
+feature layers in different ways depending on the type of data.
 
-To summarize how I made this functionality work:
+To summarize how I build this functionality:
 * A dialog object is created in JavaScript to allow a user to enter different
 settings, such as fill color or outline color.
 * When a user clicks the save button, all the symbol settings will be saved as a
